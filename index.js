@@ -3,6 +3,7 @@ const app = express();
 const router = express.Router();
 const mongoose = require('mongoose');
 const path = require('path');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const config = require('./config/database');
 
@@ -10,7 +11,7 @@ const authentication = require('./routes/authentication')(router);
 
 ///Database
 mongoose.Promise = global.Promise;
-mongoose.connect(config.uri, (err) =>{
+mongoose.connect(config.uri, {useNewUrlParser: true},(err) =>{
     if(err){
     console.log('Could NOT connect to database: ', err);
     }else{
@@ -18,6 +19,9 @@ mongoose.connect(config.uri, (err) =>{
     }
 });
 
+  app.use(cors({
+      origin: 'http://localhost:4200'
+  }))
 //parse application/x-www-from-urlencode
 app.use(bodyParser.urlencoded({extended: false}))
 //parse application/json
