@@ -17,8 +17,17 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  registerUser(user){
-    return this.http.post(this.domain + '/authentication/register', user, headerOption);
+  registerUser(user):Observable<any>{
+    return this.http.post<any>(this.domain + '/authentication/register', user, headerOption);
+  }
+
+  
+  checkUsername(username):Observable<any> {
+    return this.http.get<any>(this.domain + '/authentication/check-username/' + username);
+  }
+
+  checkEmail(email): Observable<any> {
+    return this.http.get<any>(this.domain + '/authentication/check-email/' + email);
   }
 
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup ,Validator, Validators} from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -22,7 +23,8 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private router : Router
   ) { 
     this.createForm();
   }
@@ -100,6 +102,8 @@ export class RegisterComponent implements OnInit {
   }
 
   onRegisterSubmit() {
+    this.processing = true;
+    this.disableForm();
     const user = {
       email: this.form.get('email').value,
       username: this.form.get('username').value,
@@ -108,17 +112,22 @@ export class RegisterComponent implements OnInit {
 
     this.authService.registerUser(user).subscribe(data => {
      // console.log(data);
-     if(!data){
-       this.messageClass = 'alert alert-success';
-       this.message = data;
+     if(!data.success){
+       this.messageClass = 'alert alert-danger';
+       this.message = data.message;
+       this.processing = false;
+       this.enableForm();
      }else{
-      this.messageClass = 'alert alert-danger';
-      this.message = data;
+      this.messageClass = 'alert alert-success';
+      this.message = data.message;
+      setTimeout(() =>{
+       this.router.navigate(['/login']);
+      }, 2000);
      }
     });
   }
 
- /*  checkEmail() {
+   checkEmail() {
     this.authService.checkEmail(this.form.controls.email.value).subscribe(data => {
       if(!data.success) {
         this.validEmail = false;
@@ -130,9 +139,9 @@ export class RegisterComponent implements OnInit {
         this.emailMessage = data.message;
       }
     }); 
-  }  */
+  }  
 
-/*   checkUsername() {
+  checkUsername() {
      this.authService.checkUsername(this.form.controls.username.value).subscribe(data => {
       if(!data.success) {
         this.usernameValid = false;
@@ -144,7 +153,7 @@ export class RegisterComponent implements OnInit {
         this.usernameMessage = data.message;
       }
     }); 
-  } */
+  } 
 
   ngOnInit() {
   }
