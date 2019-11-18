@@ -14,8 +14,29 @@ const headerOption = {
 export class AuthService {
 
   domain = "http://localhost:8080";
+  authToken;
+  user;
+  options;
 
   constructor(private http: HttpClient) { }
+
+  createAuthenticationHeaders() {
+    this.loadToken();
+    this.options = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        'Authorization': this.authToken
+      })
+    };
+    
+  }
+  
+  ;
+
+  loadToken() {
+    this.authToken =  localStorage.getItem('token');
+  }
+
 
   registerUser(user):Observable<any>{
     return this.http.post<any>(this.domain + '/authentication/register', user, headerOption);
@@ -28,6 +49,23 @@ export class AuthService {
 
   checkEmail(email): Observable<any> {
     return this.http.get<any>(this.domain + '/authentication/check-email/' + email);
+  }
+
+  login(user):Observable<any>{
+    return this.http.post<any>(`${this.domain}/authentication/login`, user);
+  }
+
+  storeUserData(token, user) {
+    localStorage.setItem('token', token);
+    user = JSON.stringify(user);
+    localStorage.setItem('user', user);
+    this.authToken = token;
+    this.user = user;
+  }
+
+  getProfile():Observable<any>  {
+    this.createAuthenticationHeaders();
+    return this.http.get<any>(`${this.domain}/authentication/profile`, this.options);
   }
 
 }

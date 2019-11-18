@@ -100,7 +100,7 @@ userSchema.pre('save',function(next) {
 
 
 // here we are bcrypt the password
-userSchema.methods.comparePassword = (password) =>{
+userSchema.methods.comparePassword = function(password) {
     return bcrypt.compareSync(password, this.password);
 }
 
