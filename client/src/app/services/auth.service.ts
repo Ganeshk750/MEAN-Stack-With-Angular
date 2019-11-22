@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { tokenNotExpired } from 'angular2-jwt'
 
 const headerOption = {
   headers: new HttpHeaders({
@@ -29,9 +30,7 @@ export class AuthService {
       })
     };
     
-  }
-  
-  ;
+  };
 
   loadToken() {
     this.authToken =  localStorage.getItem('token');
@@ -55,6 +54,12 @@ export class AuthService {
     return this.http.post<any>(`${this.domain}/authentication/login`, user);
   }
 
+  logout(){
+    this.authToken = null;
+    this.user = null;
+    localStorage.clear();
+  }
+
   storeUserData(token, user) {
     localStorage.setItem('token', token);
     user = JSON.stringify(user);
@@ -63,9 +68,14 @@ export class AuthService {
     this.user = user;
   }
 
+  loggedIn() {
+    return tokenNotExpired('token');
+  }
+
   getProfile():Observable<any>  {
     this.createAuthenticationHeaders();
     return this.http.get<any>(`${this.domain}/authentication/profile`, this.options);
   }
+
 
 }
