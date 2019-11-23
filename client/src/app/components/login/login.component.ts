@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { AuthGuard } from '../../guards/auth.guard';
 
 @Component({
   selector: 'app-login',
@@ -19,6 +20,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService, 
+    private authGuard: AuthGuard,
     private router: Router) { 
     this.createForm();
   }
@@ -70,6 +72,12 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    if(this.authGuard.redirectUrl) {
+      this.messageClass = 'alert alert-danger';
+      this.message = 'You need to be logged in to view that.'
+      this.previousUrl = this.authGuard.redirectUrl;
+      this.authGuard.redirectUrl = undefined;
+    }
   
   }
 
