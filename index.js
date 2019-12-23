@@ -8,6 +8,8 @@ const bodyParser = require('body-parser');
 const config = require('./config/database');
 
 const authentication = require('./routes/authentication')(router);
+const blogs = require('./routes/blogs')(router); 
+
 
 ///Database
 mongoose.Promise = global.Promise;
@@ -32,6 +34,7 @@ app.use(express.static(__dirname + '/client/dist/client'));
 
   //use for routing//
   app.use('/authentication', authentication);
+  app.use('/blog', blogs);
 
 // connect server to angular Index.html
 app.get('*', (req,res) =>{
