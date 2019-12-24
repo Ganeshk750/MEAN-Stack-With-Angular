@@ -35,13 +35,13 @@ export class BlogService {
   }
 
   // Function to get all blogs from the database
- /*  getAllBlogs() {
-    this.createAuthenticationHeaders(); // Create headers
-    return this.http.get(this.domain + 'blogs/allBlogs', this.options);
+   getAllBlogs():Observable<any>  {
+    this.createAuthenticationHeaders(); 
+    return this.http.get<any>(this.domain + '/blog/allBlogs', this.options);
   }
 
   // Function to get the blog using the id
-  getSingleBlog(id) {
+ /* getSingleBlog(id) {
     this.createAuthenticationHeaders(); // Create headers
     return this.http.get(this.domain + 'blogs/singleBlog/' + id, this.options);
   }

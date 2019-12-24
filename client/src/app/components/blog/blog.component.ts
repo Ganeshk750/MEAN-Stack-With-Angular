@@ -168,12 +168,11 @@ export class BlogComponent implements OnInit {
   }
 
   // Function to get all blogs from the database
-  /* getAllBlogs() {
-    // Function to GET all blogs from database
+   getAllBlogs() {
     this.blogService.getAllBlogs().subscribe(data => {
       this.blogPosts = data.blogs; // Assign array to use in HTML
     });
-  } */
+  } 
 
 
   // Expand the list of comments
@@ -193,7 +192,7 @@ export class BlogComponent implements OnInit {
       this.username = profile.user.username; 
     });
 
-   // this.getAllBlogs(); // Get all blogs on component load
+    this.getAllBlogs(); // Get all blogs on component load
   }
 
 }
