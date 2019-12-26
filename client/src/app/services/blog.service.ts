@@ -13,7 +13,7 @@ export class BlogService {
   domain = this.authService.domain;
   //domain = "http://localhost:8080";
   options;
-  
+  blog;
   constructor(private http: HttpClient, private authService: AuthService) { }
 
   createAuthenticationHeaders() {
@@ -41,45 +41,45 @@ export class BlogService {
   }
 
   // Function to get the blog using the id
- /* getSingleBlog(id) {
+ getSingleBlog(id):Observable<any> {
     this.createAuthenticationHeaders(); // Create headers
-    return this.http.get(this.domain + 'blogs/singleBlog/' + id, this.options);
+    return this.http.get<any>(this.domain + '/blog/singleBlog/' + id, this.options);
   }
 
   // Function to edit/update blog post
-  editBlog(blog) {
+  editBlog(blog):Observable<any> {
     this.createAuthenticationHeaders(); // Create headers
-    return this.http.put(this.domain + 'blogs/updateBlog/', blog, this.options);
+    return this.http.put<any>(this.domain + '/blog/updateBlog/', blog, this.options);
   }
 
   // Function to delete a blog
-  deleteBlog(id) {
+  deleteBlog(id):Observable<any> {
     this.createAuthenticationHeaders(); // Create headers
-    return this.http.delete(this.domain + 'blogs/deleteBlog/' + id, this.options);
+    return this.http.delete<any>(this.domain + '/blog/deleteBlog/' + id, this.options);
   }
 
   // Function to like a blog post
-  likeBlog(id) {
+  likeBlog(id):Observable<any> {
     const blogData = { id: id };
-    return this.http.put(this.domain + 'blogs/likeBlog/', blogData, this.options);
+    return this.http.put<any>(this.domain + '/blog/likeBlog/', blogData, this.options);
   }
 
   // Function to dislike a blog post
-  dislikeBlog(id) {
+  dislikeBlog(id):Observable<any> {
     const blogData = { id: id };
-    return this.http.put(this.domain + 'blogs/dislikeBlog/', blogData, this.options);
+    return this.http.put<any>(this.domain + '/blog/dislikeBlog/', blogData, this.options);
   }
 
   // Function to post a comment on a blog post
-  postComment(id, comment) {
+  postComment(id, comment):Observable<any> {
     this.createAuthenticationHeaders(); // Create headers
     // Create blogData to pass to backend
     const blogData = {
       id: id,
       comment: comment
     }
-    return this.http.post(this.domain + 'blogs/comment', blogData, this.options);
+    return this.http.post<any>(this.domain + '/blog/comment', blogData, this.options);
 
-  } */
+  } 
 
 }

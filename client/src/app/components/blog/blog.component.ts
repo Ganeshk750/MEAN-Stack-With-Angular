@@ -133,28 +133,28 @@ export class BlogComponent implements OnInit {
 
     // Create blog object from form fields
     const blog = {
-      title: this.form.get('title').value, // Title field
-      body: this.form.get('body').value, // Body field
-      createdBy: this.username // CreatedBy field
+      title: this.form.get('title').value, 
+      body: this.form.get('body').value, 
+      createdBy: this.username 
     }
 
     // Function to save blog into database
     this.blogService.newBlog(blog).subscribe(data => {
       // Check if blog was saved to database or not
       if (!data.success) {
-        this.messageClass = 'alert alert-danger'; // Return error class
-        this.message = data.message; // Return error message
-        this.processing = false; // Enable submit button
+        this.messageClass = 'alert alert-danger'; 
+        this.message = data.message; 
+        this.processing = false; 
         this.enableFormNewBlogForm(); // Enable form
       } else {
-        this.messageClass = 'alert alert-success'; // Return success class
-        this.message = data.message; // Return success message
+        this.messageClass = 'alert alert-success'; 
+        this.message = data.message; 
         this.getAllBlogs();
         // Clear form data after two seconds
         setTimeout(() => {
           this.newPost = false; // Hide form
           this.processing = false; // Enable submit button
-          this.message = false; // Erase error/success message
+          this.message = false; 
           this.form.reset(); // Reset all form fields
           this.enableFormNewBlogForm(); // Enable the form fields
         }, 2000);
@@ -173,6 +173,39 @@ export class BlogComponent implements OnInit {
       this.blogPosts = data.blogs; // Assign array to use in HTML
     });
   } 
+  // Function to like a blog post
+  likeBlog(id) {
+    // Service to like a blog post
+    this.blogService.likeBlog(id).subscribe(data => {
+      this.getAllBlogs(); // Refresh blogs after like
+    });
+  }
+
+  // Function to disliked a blog post
+  dislikeBlog(id) {
+    // Service to dislike a blog post
+    this.blogService.dislikeBlog(id).subscribe(data => {
+      this.getAllBlogs(); // Refresh blogs after dislike
+    });
+  }
+
+   // Function to post a new comment
+   postComment(id) {
+    this.disableCommentForm(); 
+    this.processing = true; 
+    const comment = this.commentForm.get('comment').value; 
+    // Function to save the comment to the database
+    this.blogService.postComment(id, comment).subscribe(data => {
+      this.getAllBlogs(); 
+      const index = this.newComment.indexOf(id); 
+      this.newComment.splice(index, 1); 
+      this.enableCommentForm(); 
+      this.commentForm.reset(); 
+      this.processing = false; 
+      if (this.enabledComments.indexOf(id) < 0) this.expand(id); // Expand comments for user on comment submission
+    });
+  }
+
 
 
   // Expand the list of comments

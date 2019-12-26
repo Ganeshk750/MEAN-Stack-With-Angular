@@ -13,7 +13,7 @@ const blogs = require('./routes/blogs')(router);
 
 ///Database
 mongoose.Promise = global.Promise;
-mongoose.connect(config.uri, {useNewUrlParser: true},(err) =>{
+mongoose.connect(config.uri, {useNewUrlParser: true,useCreateIndex: true},(err) =>{
     if(err){
     console.log('Could NOT connect to database: ', err);
     }else{
