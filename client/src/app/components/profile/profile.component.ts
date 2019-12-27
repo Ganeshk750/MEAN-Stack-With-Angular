@@ -10,6 +10,7 @@ export class ProfileComponent implements OnInit {
   
   username;
   email;
+  foundProfile = false;
   
   constructor( private authService: AuthService) { }
 

@@ -77,5 +77,11 @@ export class AuthService {
     return this.http.get<any>(`${this.domain}/authentication/profile`, this.options);
   }
 
+   // Function to get public profile data
+   getPublicProfile(username):Observable<any> {
+    this.createAuthenticationHeaders(); // Create headers before sending to API
+    return this.http.get<any>(this.domain + '/authentication/publicProfile/' + username, this.options);
+  }
+
 
 }
